@@ -33,6 +33,8 @@ class ViewController: UIViewController {
     var insideHeaderVisibilityIsOn = false
     
     var currentScrollModeIndex = 0
+
+    // 滑动模式
     let allScrollModes: [ScrollingMode] = [
         .none,
         .nonStopTo(customInterval: 374, withResistance: 0.5),
@@ -42,7 +44,8 @@ class ViewController: UIViewController {
         .stopAtEachCalendarFrame,
         .stopAtEachSection
     ]
-    
+
+    // 滑动模式
     @IBAction func changeScroll(_ sender: Any) {
         currentScrollModeIndex += 1
         if currentScrollModeIndex >= allScrollModes.count { currentScrollModeIndex = 0 }
@@ -53,6 +56,7 @@ class ViewController: UIViewController {
         
     }
 
+    // 实现显示当月月份
     @IBAction func showPrepost(_ sender: UIButton) {
         prePostVisibility = {state, cell in
             cell?.isHidden = false
@@ -81,7 +85,8 @@ class ViewController: UIViewController {
         insideHeaderVisibilityIsOn.toggle()
         calendarView.reloadData()
     }
-    
+
+    // 是否显示header
     @IBAction func toggleOutsideHeaders(_ sender: UIButton) {
         if outsideHeaderVisibilityIsOn {
             monthLabel.isHidden = true
@@ -94,7 +99,8 @@ class ViewController: UIViewController {
         }
         outsideHeaderVisibilityIsOn.toggle()
     }
-    
+
+    // 边距
     @IBAction func decreaseCellInset(_ sender: UIButton) {
         calendarView.minimumLineSpacing -= 0.5
         calendarView.minimumInteritemSpacing -= 0.5
@@ -107,19 +113,20 @@ class ViewController: UIViewController {
         calendarView.reloadData()
     }
     
-    
+    // 减小itemSize
     @IBAction func decreaseItemSize(_ sender: UIButton) {
         calendarView.cellSize -= 1
         calendarView.reloadData()
     }
-    
+
+    // 增加itemSize
     @IBAction func increaseItemSize(_ sender: UIButton) {
         if calendarView.cellSize == 0 { calendarView.cellSize = 54.0}
         calendarView.cellSize += 1
         calendarView.reloadData()
     }
 
-    
+    // 改变行数
     @IBAction func changeToRow(_ sender: UIButton) {
         numberOfRows = Int(sender.title(for: .normal)!)!
 
@@ -130,19 +137,21 @@ class ViewController: UIViewController {
         calendarView.reloadData()
     }
 
+    // 方向
     @IBAction func changeDirection(_ sender: UIButton) {
         if calendarView.scrollDirection == .horizontal {
             calendarView.scrollDirection = .vertical
-//            calendarView.cellSize = 25
+            //            calendarView.cellSize = 25
             sender.setTitle("Scrolling = Vertical", for: .normal)
         } else {
             calendarView.scrollDirection = .horizontal
-//            calendarView.cellSize = 0
+            //            calendarView.cellSize = 0
             sender.setTitle("Scrolling = Horizontal", for: .normal)
         }
         calendarView.reloadData()
     }
-    
+
+    // 界限
     @IBAction func toggleStrictBoundary(sender: UIButton) {
         hasStrictBoundaries = !hasStrictBoundaries
         if hasStrictBoundaries {
@@ -158,16 +167,20 @@ class ViewController: UIViewController {
             aButton.tintColor = disabledColor
         }
         sender.tintColor = enabledColor
-
+        /*
+         /// tillEndOfRow将生成日期，直到一行结束。
+         /// endOfGrid将继续生成，直到它填满一个6x7的网格。
+         /// Off-mode将不会生成延迟日期
+         */
         switch sender.title(for: .normal)! {
-        case "EOR":
-            generateOutDates = .tillEndOfRow
-        case "EOG":
-            generateOutDates = .tillEndOfGrid
-        case "OFF":
-            generateOutDates = .off
-        default:
-            break
+            case "EOR":
+                generateOutDates = .tillEndOfRow
+            case "EOG":
+                generateOutDates = .tillEndOfGrid
+            case "OFF":
+                generateOutDates = .off
+            default:
+                break
         }
         calendarView.reloadData()
 
@@ -178,7 +191,9 @@ class ViewController: UIViewController {
             aButton.tintColor = disabledColor
         }
         sender.tintColor = enabledColor
-
+        ///forFirstMonthOnly:只生成第一个月的日期
+        /// forAllMonths将生成所有月份的日期
+        /// off设置不会生成日期
         switch sender.title(for: .normal)! {
             case "First":
                 generateInDates = .forFirstMonthOnly
@@ -186,8 +201,8 @@ class ViewController: UIViewController {
                 generateInDates = .forAllMonths
             case "Off":
                 generateInDates = .off
-        default:
-            break
+            default:
+                break
         }
 
         calendarView.reloadData()
@@ -195,12 +210,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // 注册header
         calendarView.register(UINib(nibName: "PinkSectionHeaderView", bundle: Bundle.main),
                               forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                               withReuseIdentifier: "PinkSectionHeaderView")
         
-//        calendarView.allowsMultipleSelection = true
-//        calendarView.allowsMultipleSelection = true
+        //        calendarView.allowsMultipleSelection = true
+        //        calendarView.allowsMultipleSelection = true
         
         self.calendarView.visibleDates {[unowned self] (visibleDates: DateSegmentInfo) in
             self.setupViewsOfCalendar(from: visibleDates)
@@ -313,23 +329,25 @@ class ViewController: UIViewController {
     // Function to handle the calendar selection
     func handleCellSelection(view: JTACDayCell?, cellState: CellState) {
         guard let myCustomCell = view as? CellView else {return }
-//        switch cellState.selectedPosition() {
-//        case .full:
-//            myCustomCell.backgroundColor = .green
-//        case .left:
-//            myCustomCell.backgroundColor = .yellow
-//        case .right:
-//            myCustomCell.backgroundColor = .red
-//        case .middle:
-//            myCustomCell.backgroundColor = .blue
-//        case .none:
-//            myCustomCell.backgroundColor = nil
-//        }
+        //        switch cellState.selectedPosition() {
+        //        case .full:
+        //            myCustomCell.backgroundColor = .green
+        //        case .left:
+        //            myCustomCell.backgroundColor = .yellow
+        //        case .right:
+        //            myCustomCell.backgroundColor = .red
+        //        case .middle:
+        //            myCustomCell.backgroundColor = .blue
+        //        case .none:
+        //            myCustomCell.backgroundColor = nil
+        //        }
         
         if cellState.isSelected {
+            // 选中
             myCustomCell.selectedView.layer.cornerRadius =  13
             myCustomCell.selectedView.isHidden = false
         } else {
+            // 没有选中
             myCustomCell.selectedView.isHidden = true
         }
     }
@@ -346,13 +364,14 @@ class ViewController: UIViewController {
     }
     
     @IBAction func increaseSectionInset(_ sender: UIButton) {
-                calendarView.sectionInset.bottom += 3
-                calendarView.sectionInset.top += 3
+        calendarView.sectionInset.bottom += 3
+        calendarView.sectionInset.top += 3
         calendarView.sectionInset.left += 3
         calendarView.sectionInset.right += 3
         calendarView.reloadData()
     }
-    
+
+    // 设置滑动模式
     func setupScrollMode() {
         currentScrollModeIndex = 6
         calendarView.scrollingMode = allScrollModes[currentScrollModeIndex]
@@ -361,15 +380,17 @@ class ViewController: UIViewController {
 
 // MARK : JTAppleCalendarDelegate
 extension ViewController: JTACMonthViewDelegate, JTACMonthViewDataSource {
+    // 配置日历
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
         
         formatter.dateFormat = "yyyy MM dd"
         formatter.timeZone = testCalendar.timeZone
         formatter.locale = testCalendar.locale
         
-        
-        let startDate = formatter.date(from: "2018 01 01")!
-        let endDate = formatter.date(from: "2018 12 01")!
+        // 开始日期
+        let startDate = formatter.date(from: "2019 01 01")!
+        // 结束日期
+        let endDate = formatter.date(from: "2019 12 01")!
         
         let parameters = ConfigurationParameters(startDate: startDate,
                                                  endDate: endDate,
@@ -377,22 +398,28 @@ extension ViewController: JTACMonthViewDelegate, JTACMonthViewDataSource {
                                                  calendar: testCalendar,
                                                  generateInDates: generateInDates,
                                                  generateOutDates: generateOutDates,
-                                                 firstDayOfWeek: .monday,
+                                                 // 第一天日期
+                                                 firstDayOfWeek: .sunday,
+                                                 // 有严格的界限
                                                  hasStrictBoundaries: hasStrictBoundaries)
         return parameters
     }
-    
+
+    // 配置显示的cell
     func configureVisibleCell(myCustomCell: CellView, cellState: CellState, date: Date, indexPath: IndexPath) {
         myCustomCell.dayLabel.text = cellState.text
+
+        // 今天日期
         if testCalendar.isDateInToday(date) {
             myCustomCell.backgroundColor = .red
         } else {
+            // 今天之外其他日期
             myCustomCell.backgroundColor = .white
         }
         
         handleCellConfiguration(cell: myCustomCell, cellState: cellState)
         
-        
+        // 是否显示月份
         if cellState.text == "1" {
             let formatter = DateFormatter()
             formatter.dateFormat = "MMM"
@@ -402,13 +429,15 @@ extension ViewController: JTACMonthViewDelegate, JTACMonthViewDataSource {
             myCustomCell.monthLabel.text = ""
         }
     }
-    
+
+    // 将要显示
     func calendar(_ calendar: JTACMonthView, willDisplay cell: JTACDayCell, forItemAt date: Date, cellState: CellState, indexPath: IndexPath) {
         // This function should have the same code as the cellForItemAt function
         let myCustomCell = cell as! CellView
         configureVisibleCell(myCustomCell: myCustomCell, cellState: cellState, date: date, indexPath: indexPath)
     }
-    
+
+    // 生成cell
     func calendar(_ calendar: JTACMonthView, cellForItemAt date: Date, cellState: CellState, indexPath: IndexPath) -> JTACDayCell {
         let myCustomCell = calendar.dequeueReusableCell(withReuseIdentifier: "CellView", for: indexPath) as! CellView
         configureVisibleCell(myCustomCell: myCustomCell, cellState: cellState, date: date, indexPath: indexPath)
@@ -419,12 +448,13 @@ extension ViewController: JTACMonthViewDelegate, JTACMonthViewDataSource {
         handleCellConfiguration(cell: cell, cellState: cellState)
     }
 
+    // 选中日期
     func calendar(_ calendar: JTACMonthView, didSelectDate date: Date, cell: JTACDayCell?, cellState: CellState, indexPath: IndexPath) {
         handleCellConfiguration(cell: cell, cellState: cellState)
     }
     
     func calendar(_ calendar: JTACMonthView, didScrollToDateSegmentWith visibleDates: DateSegmentInfo) {
-//        print("After: \(calendar.contentOffset.y)")
+        //        print("After: \(calendar.contentOffset.y)")
 
     }
     

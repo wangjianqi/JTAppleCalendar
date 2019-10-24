@@ -83,7 +83,7 @@ class TestPersianCalendar: UIViewController {
 
 extension TestPersianCalendar: JTACMonthViewDataSource {
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        
+        // 波斯日历： 从右到左边
         let persianCalendar = Calendar(identifier: .persian)
         
         let testFotmatter = DateFormatter()

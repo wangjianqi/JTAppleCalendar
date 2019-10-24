@@ -69,12 +69,12 @@ class TestViewController: UIViewController {
     
     @IBAction func selectOneDate(_ sender: UIButton) {
         formatter.dateFormat = "yyyy MM dd"
-        let date = formatter.date(from: "2017 01 03")!
+        let date = formatter.date(from: "2019 09 03")!
         calendarView.selectDates([date])
     }
     @IBAction func selectOtherDate(_ sender: UIButton) {
         formatter.dateFormat = "yyyy MM dd"
-        let date = formatter.date(from: "2017 01 31")!
+        let date = formatter.date(from: "2019 10 20")!
         calendarView.selectDates([date])
     }
     
@@ -168,8 +168,8 @@ extension TestViewController: JTACMonthViewDataSource, JTACMonthViewDelegate {
         formatter.locale = Calendar.current.locale
         
         
-        let startDate = formatter.date(from: "2017 01 01")!
-        let endDate = formatter.date(from: "2030 02 01")!
+        let startDate = formatter.date(from: "2019 08 01")!
+        let endDate = formatter.date(from: "2019 12 01")!
         
         let parameters = ConfigurationParameters(startDate: startDate,endDate: endDate)
         return parameters
